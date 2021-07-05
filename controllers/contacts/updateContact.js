@@ -2,11 +2,21 @@ const fs = require('fs').promises
 const path = require('path')
 const contacts = require('../../model/contacts.json')
 const contactsPath = path.join(__dirname, '../../model/contacts.json')
+const contactSchema = require('../../validate/schemas')
 
 const updateContact = (req, res) => {
+  const { error } = contactSchema.validate(req.body)
+  if (error) {
+    res.status(400).json({
+      status: 'error',
+      code: 400,
+      message: 'Missing fields',
+    })
+    return
+  }
+
   const { contactId } = req.params
   const indexContact = contacts.findIndex(({ id }) => id === Number(contactId))
-
   if (indexContact === -1) {
     res.status(404).json({
       status: 'error',
