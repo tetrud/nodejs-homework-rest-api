@@ -1,35 +1,20 @@
-const fs = require('fs').promises
-const path = require('path')
-const { v4 } = require('uuid')
+const { Contact } = require('../../model')
+const { HttpCode } = require('../../helpers/constants')
 
-const contacts = require('../../model/contacts.json')
-const contactSchema = require('../../validate/schemas')
-const contactsPath = path.join(__dirname, '../../model/contacts.json')
+const addContact = async (req, res, next) => {
+  try {
+    const result = await Contact.create(req.body)
 
-const addContact = (req, res) => {
-  const { error } = contactSchema.validate(req.body)
-  if (error) {
-    res.status(400).json({
-      status: 'error',
-      code: 400,
-      message: 'Missing required name field',
+    res.status(HttpCode.CREATED).json({
+      status: 'success',
+      code: HttpCode.CREATED,
+      date: {
+        result,
+      },
     })
-    return
+  } catch (error) {
+    next(error)
   }
-
-  const randomId = v4()
-  const id = Number(randomId.replace(/[^+\d]/g, ''))
-  const newContact = { id, ...req.body }
-
-  const newContacts = contacts ? [...contacts, newContact] : newContact
-  fs.writeFile(contactsPath, JSON.stringify(newContacts))
-  res.status(201).json({
-    status: 'success',
-    code: 201,
-    date: {
-      result: newContact,
-    },
-  })
 }
 
 module.exports = addContact

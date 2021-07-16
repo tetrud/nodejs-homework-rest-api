@@ -1,29 +1,23 @@
-const fs = require('fs').promises
-const path = require('path')
-const contacts = require('../../model/contacts.json')
-const contactsPath = path.join(__dirname, '../../model/contacts.json')
+const { Contact } = require('../../model')
+const { HttpCode } = require('../../helpers/constants')
 
-const removeContact = (req, res) => {
-  const { contactId } = req.params
-  const indexContact = contacts.findIndex(({ id }) => id === Number(contactId))
+const removeContact = async (req, res) => {
+  try {
+    const { contactId } = req.params
+    const result = await Contact.findByIdAndRemove(contactId)
 
-  if (indexContact === -1) {
-    res.status(404).json({
+    res.json({
+      status: 'success',
+      code: HttpCode.OK,
+      result,
+    })
+  } catch (error) {
+    res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
-      code: 404,
+      code: HttpCode.NOT_FOUND,
       message: 'Not found',
     })
-    return
   }
-
-  const newContacts = contacts.filter(({ id }) => id !== Number(contactId))
-  fs.writeFile(contactsPath, JSON.stringify(newContacts))
-
-  res.status(200).json({
-    status: 'success',
-    code: 200,
-    message: 'Сontact deleted',
-  })
 }
 
 module.exports = removeContact

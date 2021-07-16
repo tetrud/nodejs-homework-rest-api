@@ -1,3 +1,5 @@
-const contactSchema = require('./contacts')
+const validate = require('./contacts')
 
-module.exports = contactSchema
+module.exports = {
+  validate,
+}

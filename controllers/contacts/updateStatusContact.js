@@ -1,16 +1,14 @@
 const { Contact } = require('../../model')
 const { HttpCode } = require('../../helpers/constants')
 
-const updateContact = async (req, res) => {
+const updateStatusContact = async (req, res, next) => {
   try {
     const { contactId } = req.params
-    const result = await Contact.findByIdAndUpdate(
-      contactId,
-      { ...req.body },
-      { new: true }
-    )
+    const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+      new: true,
+    })
 
-    res.json({
+    return res.json({
       status: 'success',
       code: HttpCode.OK,
       data: {
@@ -21,9 +19,8 @@ const updateContact = async (req, res) => {
     res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
       code: HttpCode.NOT_FOUND,
-      message: 'Missing fields',
+      message: 'Not Found',
     })
   }
 }
-
-module.exports = updateContact
+module.exports = updateStatusContact
