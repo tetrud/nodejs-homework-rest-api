@@ -1,25 +1,26 @@
 const { Contact } = require('../../model')
+const { HttpCode } = require('../../helpers/constants')
 
 const updateContact = async (req, res) => {
   try {
     const { contactId } = req.params
     const result = await Contact.findByIdAndUpdate(
-      { _id: contactId },
+      contactId,
       { ...req.body },
       { new: true }
     )
 
     res.json({
       status: 'success',
-      code: 200,
+      code: HttpCode.OK,
       data: {
         result,
       },
     })
   } catch (error) {
-    res.status(400).json({
+    res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
-      code: 400,
+      code: HttpCode.NOT_FOUND,
       message: 'Missing fields',
     })
   }

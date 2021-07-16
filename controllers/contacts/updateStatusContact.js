@@ -1,4 +1,5 @@
 const { Contact } = require('../../model')
+const { HttpCode } = require('../../helpers/constants')
 
 const updateStatusContact = async (req, res, next) => {
   try {
@@ -9,15 +10,15 @@ const updateStatusContact = async (req, res, next) => {
 
     return res.json({
       status: 'success',
-      code: 200,
+      code: HttpCode.OK,
       data: {
         result,
       },
     })
   } catch (error) {
-    res.status(404).json({
+    res.status(HttpCode.NOT_FOUND).json({
       status: 'error',
-      code: 404,
+      code: HttpCode.NOT_FOUND,
       message: 'Not Found',
     })
   }
