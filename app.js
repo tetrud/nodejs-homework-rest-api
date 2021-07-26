@@ -1,8 +1,9 @@
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
+require('./configs/passport')
 
-const contactsRouter = require('./routes/api/contacts')
+const routes = require('./routes/api')
 const { HttpCode } = require('./helpers/constants')
 
 const app = express()
@@ -13,7 +14,8 @@ app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
 
-app.use('/api/contacts', contactsRouter)
+app.use('/api/contacts', routes.contacts)
+app.use('/api/users', routes.auth)
 
 app.use((_, res) => {
   res.status(HttpCode.NOT_FOUND).json({

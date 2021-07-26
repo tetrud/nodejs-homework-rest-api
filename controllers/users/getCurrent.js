@@ -1,15 +1,16 @@
-const { contact: service } = require('../../services')
-
 const { HttpCode } = require('../../helpers/constants')
 
-const listContacts = async (req, res, next) => {
+const getCurrent = (req, res, next) => {
   try {
-    const result = await service.getAll()
+    const currentUser = {
+      email: req.user.email,
+      subscription: req.user.subscription,
+    }
     res.json({
       status: 'success',
       code: HttpCode.OK,
       data: {
-        result,
+        result: currentUser,
       },
     })
   } catch (error) {
@@ -17,4 +18,4 @@ const listContacts = async (req, res, next) => {
   }
 }
 
-module.exports = listContacts
+module.exports = getCurrent

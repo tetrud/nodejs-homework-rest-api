@@ -1,14 +1,15 @@
-const { Contact } = require('../../model')
+const { contact: service } = require('../../services')
+
 const { HttpCode } = require('../../helpers/constants')
 
 const addContact = async (req, res, next) => {
   try {
-    const result = await Contact.create(req.body)
+    const result = await service.add(req.body)
 
     res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      date: {
+      data: {
         result,
       },
     })
