@@ -1,5 +1,7 @@
 const passport = require('passport')
-const { HttpCode } = require('../helpers/constants')
+require('../configs/passport')
+
+const { HttpCode } = require('../helpers')
 
 const authenticate = (req, res, next) => {
   return passport.authenticate('jwt', { session: false }, (error, user) => {

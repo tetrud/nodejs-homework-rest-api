@@ -19,6 +19,7 @@ passport.use(
       if (!user) {
         throw new Error('Not found')
       }
+
       done(null, user)
     } catch (error) {
       done(error)

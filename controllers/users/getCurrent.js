@@ -1,4 +1,4 @@
-const { HttpCode } = require('../../helpers/constants')
+const { HttpCode } = require('../../helpers')
 
 const getCurrent = (req, res, next) => {
   try {

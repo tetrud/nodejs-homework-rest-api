@@ -1,11 +1,11 @@
 const { contact: service } = require('../../services')
 
-const { HttpCode } = require('../../helpers/constants')
+const { HttpCode } = require('../../helpers')
 
 const removeContact = async (req, res) => {
   try {
     const { contactId } = req.params
-    const result = await service.remove(contactId)
+    const result = await service.remove(req.user.id, contactId)
 
     res.json({
       status: 'success',

@@ -12,8 +12,12 @@ const userSchema = Joi.object({
   subscription: Joi.string().optional(),
 })
 
-const userValidate = (req, res, next) => {
-  const { error } = userSchema.validate(req.body)
+const updateSubscriptionSchema = Joi.object({
+  subscription: Joi.string().valid('starter', 'pro', 'business').required(),
+})
+
+const validate = (schema, body, next) => {
+  const { error } = schema.validate(body)
 
   if (error) {
     return next({
@@ -25,4 +29,14 @@ const userValidate = (req, res, next) => {
   next()
 }
 
-module.exports = userValidate
+const create = (req, res, next) => {
+  return validate(userSchema, req.body, next)
+}
+const subscription = (req, res, next) => {
+  return validate(updateSubscriptionSchema, req.body, next)
+}
+
+module.exports = {
+  create,
+  subscription,
+}

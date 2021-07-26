@@ -1,8 +1,7 @@
 const { user: service } = require('../../services')
-const { HttpCode } = require('../../helpers/constants')
+const { HttpCode } = require('../../helpers')
 
 const signup = async (req, res, next) => {
-  console.log(service)
   const { email, password, subscription } = req.body
   try {
     const result = await service.getOne({ email })
