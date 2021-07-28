@@ -1,5 +1,7 @@
-const validate = require('./contacts')
+const contactValidate = require('./contacts')
+const userValidate = require('./users')
 
 module.exports = {
-  validate,
+  contactValidate,
+  userValidate,
 }

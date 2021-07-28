@@ -1,11 +1,12 @@
-const { Contact } = require('../../model')
-const { HttpCode } = require('../../helpers/constants')
+const { contact: service } = require('../../services')
+
+const { HttpCode } = require('../../helpers')
 
 const getContactById = async (req, res) => {
   const { contactId } = req.params
 
   try {
-    const result = await Contact.findById(contactId)
+    const result = await service.findById(req.user.id, contactId)
 
     res.json({
       status: 'success',

@@ -1,19 +1,23 @@
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
-
-const contactsRouter = require('./routes/api/contacts')
-const { HttpCode } = require('./helpers/constants')
+const helmet = require('helmet')
+const routes = require('./routes/api')
+const { jsonLimit } = require('./configs/rate-limit.json')
+const { HttpCode, rateLimit } = require('./helpers')
 
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 
+app.use(helmet())
 app.use(logger(formatsLogger))
 app.use(cors())
-app.use(express.json())
+app.use(express.json({ limit: jsonLimit }))
 
-app.use('/api/contacts', contactsRouter)
+app.use('/api/', rateLimit.createApiLimit)
+app.use('/api/contacts', routes.contacts)
+app.use('/api/users', routes.auth)
 
 app.use((_, res) => {
   res.status(HttpCode.NOT_FOUND).json({

@@ -1,14 +1,15 @@
-const { Contact } = require('../../model')
-const { HttpCode } = require('../../helpers/constants')
+const { contact: service } = require('../../services')
+
+const { HttpCode } = require('../../helpers')
 
 const listContacts = async (req, res, next) => {
   try {
-    const result = await Contact.find({})
+    const result = await service.getAll(req.user.id, req.query)
     res.json({
       status: 'success',
       code: HttpCode.OK,
       data: {
-        result,
+        ...result,
       },
     })
   } catch (error) {

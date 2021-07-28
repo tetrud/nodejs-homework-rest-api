@@ -1,10 +1,12 @@
-const { Contact } = require('../../model')
-const { HttpCode } = require('../../helpers/constants')
+const { contact: service } = require('../../services')
+
+const { HttpCode } = require('../../helpers')
 
 const updateContact = async (req, res) => {
   try {
     const { contactId } = req.params
-    const result = await Contact.findByIdAndUpdate(
+    const result = await service.update(
+      req.user.id,
       contactId,
       { ...req.body },
       { new: true }
