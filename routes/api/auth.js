@@ -4,7 +4,7 @@ const router = express.Router()
 const { auth: ctrl, users } = require('../../controllers')
 const { userValidate } = require('../../validate/schemas')
 const { authenticate } = require('../../middlewares')
-const { rateLimit } = require('../../helpers')
+const { rateLimit, upload } = require('../../helpers')
 
 router.get('/current', authenticate, users.getCurrent)
 router.patch(
@@ -13,6 +13,13 @@ router.patch(
   userValidate.subscription,
   users.updateSubscription
 )
+router.patch(
+  '/avatars',
+  authenticate,
+  upload.single('avatar'),
+  users.updateAvatar
+)
+
 router.post(
   '/signup',
   rateLimit.createAccountLimiter,
