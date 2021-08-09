@@ -23,6 +23,15 @@ const updateSubscription = async (id, updateUser) => {
     new: true,
   })
 }
+const updateAvatar = async (id, pathFile) => {
+  return await User.findByIdAndUpdate(
+    { _id: id },
+    { avatarURL: pathFile },
+    {
+      new: true,
+    }
+  )
+}
 
 module.exports = {
   getOne,
@@ -30,4 +39,5 @@ module.exports = {
   getById,
   updateToken,
   updateSubscription,
+  updateAvatar,
 }
