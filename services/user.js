@@ -1,20 +1,30 @@
+const { nanoid } = require('nanoid')
+const sendEmail = require('./sendEmail')
 const { User } = require('../models')
 
 const getById = async (id) => {
   return await User.findById(id)
 }
 
-const getOne = async (filter) => {
-  return await User.findOne(filter)
+const getOne = async (field) => {
+  return await User.findOne(field)
 }
 
 const add = async ({ email, password, subscription }) => {
-  const newUser = await new User({ email, subscription })
+  const verifyToken = nanoid()
+
+  try {
+    await sendEmail(verifyToken, email)
+  } catch (error) {
+    throw new Error('Service Unavailable')
+  }
+
+  const newUser = await new User({ email, subscription, verifyToken })
   newUser.setPassword(password)
   return newUser.save()
 }
 
-const updateToken = async (id, updateInfo) => {
+const updateById = async (id, updateInfo) => {
   return await User.findByIdAndUpdate(id, updateInfo)
 }
 
@@ -37,7 +47,7 @@ module.exports = {
   getOne,
   add,
   getById,
-  updateToken,
+  updateById,
   updateSubscription,
   updateAvatar,
 }
