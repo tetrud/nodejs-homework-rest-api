@@ -3,6 +3,7 @@ const { HttpCode } = require('../../helpers')
 
 const signup = async (req, res, next) => {
   const { email, password, subscription } = req.body
+
   try {
     const result = await service.getOne({ email })
 
@@ -28,6 +29,12 @@ const signup = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+
+  // try {
+  //  await sendEmail(verifyToken, email)
+  // } catch (error) {
+  //  throw new Error('Service Unavailable')
+  // }
 }
 
 module.exports = signup
